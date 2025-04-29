@@ -1,16 +1,24 @@
-import React from 'react'
-import Card from '../Card/Card'
-
-type Props = {}
-
-const CardList: React.FC = (props: Props): JSX.Element => {
-  return (
-    <>
-        <Card companyName='Apple' tiker='AAPL' price={110}/>
-        <Card companyName='Google' tiker='GOOGL' price={200}/>
-        <Card companyName='Microsoft' tiker='MSFT' price={300}/>
-    </>
-  )
+import React from "react";
+import Card from "../Card/Card";
+import "./CardList.css";
+import { CompanySearch } from "../../company";
+import { v4 as uuidv4 } from "uuid";
+interface Props {
+  searchResults: CompanySearch[];
 }
 
-export default CardList
+const CardList: React.FC<Props> = ({ searchResults }: Props): JSX.Element => {
+  return (
+    <div className="card-list">
+      {searchResults.length > 0 ? (
+        searchResults.map((result) => (
+          <Card id={result.symbol} key={uuidv4()} searchResult={result} />
+        ))
+      ) : (
+        <h1>No result</h1>
+      )}
+    </div>
+  );
+};
+
+export default CardList;
