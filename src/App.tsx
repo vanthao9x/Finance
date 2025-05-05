@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import './App.css';
 import CardList from './components/CardList/CardList';
 import Search from './components/Search/Search';
@@ -10,7 +10,7 @@ function App() {
   const [searchResult , setSearchResult] = useState<CompanySearch[]>([]);
   const [serverError , setServerError] = useState<string>('');
 
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     console.log(e);
 };
@@ -24,20 +24,26 @@ const handleSearch = async () => {
   console.log('Kết quả từ API:', result);
 };
 
+const onPortfolioCreate = (e: SyntheticEvent) => {
+  e.preventDefault();
+  console.log(e);
+ };
+
 const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
   if (e.key === 'Enter') {
     handleSearch();
   }
 };
 
-const onclick = async(e: React.MouseEvent<HTMLButtonElement>) => {
+const onSearchSubmit = async(e: SyntheticEvent) => {
+  e.preventDefault();
   handleSearch();
 }
 
   return (
     <div className="App">
-      <Search handleKeyDown={handleKeyDown} onclick ={onclick} search ={search} handleChange={handleChange}/>
-      <CardList searchResults={searchResult}/>
+      <Search handleKeyDown={handleKeyDown} onSearchSubmit ={onSearchSubmit} search ={search} handleSearchChange={handleSearchChange}/>
+      <CardList searchResults={searchResult} onPortfolioCreate={onPortfolioCreate}/>
       {serverError && <p>Unable to connect to API</p>}
     </div>
   );
