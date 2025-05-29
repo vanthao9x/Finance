@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using backend.Dtos.Stock;
 using backend.Models;
-using Dtos.Stock;
 
 namespace backend.Mappers
 {
@@ -19,7 +19,21 @@ namespace backend.Mappers
                 Purchase = stockModel.Purchase,
                 LastDiv = stockModel.LastDiv,
                 Industry = stockModel.Industry,
-                MarketCap = stockModel.MarketCap
+                MarketCap = stockModel.MarketCap,
+                Comments = stockModel.Comments.Select(c => c.ToCommentDto()).ToList()
+            };
+        }
+
+        public static Stock ToStockFromCreateDto(this CreateStockRequestDto createStockRequestDto)
+        {
+            return new Stock
+            {
+                Symbol = createStockRequestDto.Symbol,
+                CompanyName = createStockRequestDto.CompanyName,
+                Purchase = createStockRequestDto.Purchase,
+                LastDiv = createStockRequestDto.LastDiv,
+                Industry = createStockRequestDto.Industry,
+                MarketCap = createStockRequestDto.MarketCap
             };
         }
     }
