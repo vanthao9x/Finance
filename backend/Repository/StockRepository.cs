@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using backend.Data;
 using backend.Dtos.Stock;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace backend.Repository
             return stockModel;
         }
 
-        public async Task<Stock> DeleteAsync(int id)
+        public async Task<Stock?> DeleteAsync(int id)
         {
             var stockModel = await _context.Stock.FirstOrDefaultAsync(s => s.Id == id);
             if (stockModel == null)
@@ -38,9 +39,19 @@ namespace backend.Repository
             return stockModel;
         }
 
-        public Task<List<Stock>> GetAllAsync()
+        public async Task<List<Stock>> GetAllAsync(QueryObject query)
         {
-            return _context.Stock.Include(s => s.Comments).ToListAsync();
+            //return _context.Stock.Include(s => s.Comments).ToListAsync();
+            var allStocks = _context.Stock.Include(s => s.Comments).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(query.CompanyName))
+            {
+                allStocks = allStocks.Where(s => s.CompanyName.Contains(query.CompanyName));
+            }
+            if (!string.IsNullOrWhiteSpace(query.Symbol))
+            {
+                allStocks = allStocks.Where(s => s.Symbol.Contains(query.Symbol));
+            };
+            return await allStocks.ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
@@ -54,7 +65,7 @@ namespace backend.Repository
             return _context.Stock.AnyAsync(s => s.Id == id);
         }
 
-        public async Task<Stock> UpdateAsync(int id, UpdateStockRequestDto uSRDto)
+        public async Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto uSRDto)
         {
             var existingStockModel = await _context.Stock.FirstOrDefaultAsync(s => s.Id == id);
             if (existingStockModel == null)

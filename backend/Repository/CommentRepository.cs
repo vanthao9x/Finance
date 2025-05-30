@@ -27,7 +27,7 @@ namespace backend.Repository
 
         }
 
-        public async Task<Comment> DeleteAsync(int id)
+        public async Task<Comment?> DeleteAsync(int id)
         {
             var commentExistsId = await _context.Comment.FirstOrDefaultAsync(c => c.Id == id);
             if (commentExistsId == null)
