@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using backend.Data;
+using backend.Dtos.Comment;
 using backend.Interfaces;
+using backend.Mappers;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +13,7 @@ namespace backend.Repository
 {
     public class CommentRepository : ICommentRepository
     {
-        private readonly ApplicationDBContext  _context;
+        private readonly ApplicationDBContext _context;
         public CommentRepository(ApplicationDBContext context)
         {
             _context = context;
@@ -47,7 +49,21 @@ namespace backend.Repository
 
         public async Task<Comment?> GetCommentByIdAsync(int id)
         {
-             return await _context.Comment.FindAsync(id);
+            return await _context.Comment.FindAsync(id);
         }
+
+        public async Task<Comment?> UpdateAsync(int id, UpdateCommentDto uCDto)
+        {
+            var comment = await _context.Comment.FirstOrDefaultAsync(c => c.Id == id);
+            if (comment == null)
+            {
+                return null;
+            }
+
+            comment.UpdateCommentFromUpdateDto(uCDto);
+            await _context.SaveChangesAsync();
+            return comment;
+        }
+
     }
 }
