@@ -16,6 +16,30 @@ namespace backend.Repository
         {
             _context = context;
         }
+
+        public async Task<Comment> CreateAsync(Comment commentModel)
+        {
+            await _context.Comment.AddAsync(commentModel);
+            await _context.SaveChangesAsync();
+            return commentModel;
+
+        }
+
+        public async Task<Comment> DeleteAsync(int id)
+        {
+            var commentExistsId = await _context.Comment.FirstOrDefaultAsync(c => c.Id == id);
+            if (commentExistsId == null)
+            {
+                return null;
+            }
+            else
+            {
+                _context.Comment.Remove(commentExistsId);
+                await _context.SaveChangesAsync();
+                return commentExistsId;
+            }
+        }
+
         public async Task<List<Comment>> GetAllCommentsAsync()
         {
             return await _context.Comment.ToListAsync();
