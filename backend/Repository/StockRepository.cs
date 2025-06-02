@@ -59,6 +59,10 @@ namespace backend.Repository
                     allStocks = query.IsDecsending ? allStocks.OrderByDescending(s => s.Symbol) : allStocks.OrderBy(s => s.Symbol);
                 }
             }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            allStocks = allStocks.Skip(skipNumber).Take(query.PageSize);
+            
             return await allStocks.ToListAsync();
         }
 
