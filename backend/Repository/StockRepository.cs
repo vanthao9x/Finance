@@ -51,6 +51,14 @@ namespace backend.Repository
             {
                 allStocks = allStocks.Where(s => s.Symbol.Contains(query.Symbol));
             };
+
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase))
+                {
+                    allStocks = query.IsDecsending ? allStocks.OrderByDescending(s => s.Symbol) : allStocks.OrderBy(s => s.Symbol);
+                }
+            }
             return await allStocks.ToListAsync();
         }
 
