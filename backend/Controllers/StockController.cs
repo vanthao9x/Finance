@@ -7,6 +7,7 @@ using backend.Dtos.Stock;
 using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -22,6 +23,7 @@ namespace backend.Controllers
             _context = context;
             _stockRepo = stockRepo;
         }
+        [Authorize]
         [HttpGet]
 
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
