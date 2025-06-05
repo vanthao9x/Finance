@@ -9,5 +9,7 @@ namespace backend.Interfaces
     public interface IPortfolioRepository
     {
         Task<List<Stock>> GetUserPortfolio(AppUser username);
+        Task<Portfolio> CreateAsync(Portfolio portfolio);
+        Task<Portfolio> DeletePortfolio(AppUser appUser, string symbol);
     }
 }
