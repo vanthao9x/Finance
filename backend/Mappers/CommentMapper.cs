@@ -17,6 +17,7 @@ namespace backend.Mappers
                 Title = commentModel.Title,
                 Content = commentModel.Content,
                 CreatedOn = commentModel.CreatedOn,
+                CreatedBy = commentModel.AppUser?.UserName ?? "unknown",
                 StockId = commentModel.StockId
             };
         }
@@ -26,6 +27,7 @@ namespace backend.Mappers
             {
                 Title = commentDto.Title,
                 Content = commentDto.Content,
+
                 StockId = stockId
             };
         }
