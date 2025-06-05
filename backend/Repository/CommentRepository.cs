@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using backend.Data;
 using backend.Dtos.Comment;
+using backend.Helpers;
 using backend.Interfaces;
 using backend.Mappers;
 using backend.Models;
@@ -42,9 +43,17 @@ namespace backend.Repository
             }
         }
 
-        public async Task<List<Comment>> GetAllCommentsAsync()
+        public async Task<List<Comment>> GetAllCommentsAsync(CommentQueryObject queryObject)
         {
-            return await _context.Comment.Include(c => c.AppUser).ToListAsync();
+            var comments = _context.Comment.Include(c => c.AppUser).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(queryObject.Symbol)) {
+                comments = comments.Where(s => s.Stock.Symbol == queryObject.Symbol);
+            };
+
+            if(queryObject.IsDescending == true) {
+                comments = comments.OrderByDescending(c => c.CreatedOn);
+            }
+            return await comments.ToListAsync();
         }
 
         public async Task<Comment?> GetCommentByIdAsync(int id)
