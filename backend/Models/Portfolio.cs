@@ -12,7 +12,7 @@ namespace backend.Models
         public string AppUserId { get; set; }
 
         public int StockId { get; set; }
-        public AppUser appUser { get; set; }
-        public Stock stock{ get; set; }
+        public AppUser AppUser { get; set; }
+        public Stock Stock{ get; set; }
     }
 }

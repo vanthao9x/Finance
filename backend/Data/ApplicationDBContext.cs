@@ -27,9 +27,9 @@ namespace backend.Data
 
             builder.Entity<Portfolio>(x => x.HasKey(p => new { p.AppUserId, p.StockId }));
             builder.Entity<Portfolio>()
-                .HasOne(u => u.appUser).WithMany(u => u.Portfolios).HasForeignKey(u => u.AppUserId);
+                .HasOne(u => u.AppUser).WithMany(u => u.Portfolios).HasForeignKey(u => u.AppUserId);
             builder.Entity<Portfolio>()
-                .HasOne(u => u.stock).WithMany(u => u.Portfolios).HasForeignKey(u => u.StockId);
+                .HasOne(u => u.Stock).WithMany(u => u.Portfolios).HasForeignKey(u => u.StockId);
 
             List<IdentityRole> roles = new List<IdentityRole>()
             {
