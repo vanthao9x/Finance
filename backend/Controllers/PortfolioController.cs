@@ -18,11 +18,14 @@ namespace backend.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IStockRepository _stockRepo;
         private readonly IPortfolioRepository _portfolioRepo;
-        public PortfolioController(UserManager<AppUser> userManager, IStockRepository stockRepo, IPortfolioRepository portfolioRepo)
+        private readonly IFMPService _fmpService;
+        public PortfolioController(UserManager<AppUser> userManager, IStockRepository stockRepo, IPortfolioRepository portfolioRepo,
+            IFMPService fmpService)
         {
             _userManager = userManager;
             _stockRepo = stockRepo;
             _portfolioRepo = portfolioRepo;
+            _fmpService = fmpService;
         }
 
         [HttpGet]
@@ -41,14 +44,27 @@ namespace backend.Controllers
         {
             var username = User.GetUserName();
             var appUser = await _userManager.FindByNameAsync(username);
-            var stockSymbol = await _stockRepo.GetBySymbolAsync(symbol);
-            if (stockSymbol == null) return BadRequest("Stock does not exist");
+            var stock = await _stockRepo.GetBySymbolAsync(symbol);
+            if (stock == null)
+            {
+                stock = await _fmpService.FindStockBySymbolAsync(symbol);
+                if (stock == null)
+                {
+                    return NotFound("Stock does not exist");
+                }
+                else
+                {
+                    await _stockRepo.CreateAsync(stock);
+                }
+            }
+
+            if (stock == null) return BadRequest("Stock does not exist");
             var userPortfolio = await _portfolioRepo.GetUserPortfolio(appUser);
             if (userPortfolio.Any(e => e.Symbol.ToLower() == symbol.ToLower())) ;
             var portfolioModel = new Portfolio
             {
                 AppUserId = appUser.Id,
-                StockId = stockSymbol.Id
+                StockId = stock.Id
             };
             await _portfolioRepo.CreateAsync(portfolioModel);
             if (portfolioModel == null)
