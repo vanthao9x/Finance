@@ -40,7 +40,7 @@ export const UserProvider = ({ children }: Pros) => {
             if(res){
                 localStorage.setItem('token', res?.data.token);
                 const userObj = {
-                    username: res?.data.username,
+                    username: res?.data.userName,
                     email: res?.data.email
                 }
                 localStorage.setItem('user', JSON.stringify(userObj));
@@ -54,12 +54,12 @@ export const UserProvider = ({ children }: Pros) => {
         })
     };
 
-    const loginUser = async ( username: string, password: string) => {
-        await loginAPI(username, password).then((res) =>{
+    const loginUser = async ( UserName: string, password: string) => {
+        await loginAPI(UserName, password).then((res) =>{
             if(res){
                 localStorage.setItem('token', res?.data.token);
                 const userObj = {
-                    username: res?.data.username,
+                    username: res?.data.userName,
                     email: res?.data.email
                 }
                 localStorage.setItem('user', JSON.stringify(userObj));
