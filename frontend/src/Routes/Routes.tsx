@@ -8,18 +8,32 @@ import IncomeStatement from "../components/IncomeStatement/IncomeStatement";
 import DesignPage from "../pages/DesignPage/DesignPage";
 import BalanceSheet from "../components/BalanceSheet/BalanceSheet";
 import CashflowStatement from "../components/CashflowStatement/CashflowStatement";
+import Login from "../pages/LoginPage/Login";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import Register from "../pages/RegisterPage/Register";
+import ProtectRoute from "./ProtectRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      { path: "/", element: <HomePage />},
-      { path: "/search", element: <SearchPage />},
-      { path: "/design-guide", element: <DesignPage />},
-      { path: "/company/:ticker",element: <CompanyPage />,
+      { path: "/", element: <HomePage /> },
+      { path: "/login", element: <Login /> },
+      { path: "/register", element: <Register /> },
+      { path: "/search", element: (<ProtectRoute>
+            <SearchPage />
+          </ProtectRoute>) },
+      { path: "/design-guide", element: <DesignPage /> },
+      {
+        path: "/company/:ticker",
+        element: (
+          <ProtectRoute>
+            <CompanyPage />
+          </ProtectRoute>
+        ),
         children: [
-          { path: "company-profile", element: <CompanyProfile />},
+          { path: "company-profile", element: <CompanyProfile /> },
           { path: "income-statement", element: <IncomeStatement /> },
           { path: "balance-sheet", element: <BalanceSheet /> },
           { path: "cashflow-statement", element: <CashflowStatement /> },
@@ -27,4 +41,5 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  { path: "*", element: <ErrorPage /> },
 ]);

@@ -50,7 +50,7 @@ export const UserProvider = ({ children }: Pros) => {
                 navigate('/search');
             }
         }).catch((e) => {
-            toast.warning("Servẻ error occủed");
+            toast.warning(e?.response?.data?.message || "Server error occurred");
         })
     };
 
@@ -69,7 +69,7 @@ export const UserProvider = ({ children }: Pros) => {
                 navigate('/search');
             }
         }).catch((e) => {
-            toast.warning("Servẻ error occủed");
+            toast.warning(e?.response?.data?.message || "Server error occurred");
         })
     };
 

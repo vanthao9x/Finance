@@ -24,12 +24,18 @@ const Navbar = (props: Props) => {
             </div>
           </div>
           <div className="hidden lg:flex items-center space-x-6 text-back">
-            <div className="hover:text-darkBlue">Login</div>
+            {/* <div className="hover:text-darkBlue">Login</div> */}
             <Link
-              to="#"
-              className="px-8 py-3 font-bold rounded text-white bg-lightGreen hover:opacity-70"
+              to="login"
+              className="px-5 py-2 font-bold rounded text-white bg-lightGreen hover:opacity-70"
             >
-              Signup
+              Login
+            </Link>
+            <Link
+              to="register"
+              className="px-5 py-2 font-bold text-sm rounded text-blue-600 bg-lightGray hover:opacity-70"
+            >
+              Sign up
             </Link>
           </div>
         </div>
