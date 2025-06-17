@@ -96,5 +96,20 @@ namespace backend.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+        [HttpGet("allUsers")]
+public async Task<ActionResult<IEnumerable<NewUserDto>>> GetAllUsers()
+{
+    var users = await _userManager.Users.ToListAsync();
+
+    var userDtos = users.Select(user => new NewUserDto
+    {
+        UserName = user.UserName,
+        Email = user.Email,
+        Token = _tokenService.CreateToken(user)
+    }).ToList();
+
+    return Ok(userDtos);
+}
+
     }
 }

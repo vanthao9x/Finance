@@ -67,6 +67,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequiredLength = 6;
 }).AddEntityFrameworkStores<ApplicationDBContext>();
 var jwtKey = builder.Configuration["JWT:Key"];
+Console.WriteLine("FMP API KEY: " + builder.Configuration["FMP_API_KEY"]);
+
 if (string.IsNullOrEmpty(jwtKey))
 {
     throw new Exception("JWT Key is not configured in appsettings.json or environment variables.");

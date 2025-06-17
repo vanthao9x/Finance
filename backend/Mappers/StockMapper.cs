@@ -16,10 +16,10 @@ namespace backend.Mappers
                 Id = stockModel.Id,
                 Symbol = stockModel.Symbol,
                 CompanyName = stockModel.CompanyName,
-                Purchase = stockModel.Purchase,
-                LastDiv = stockModel.LastDiv,
+                Purchase = stockModel.Purchase ?? 0,
+                LastDiv = stockModel.LastDiv ?? 0,
                 Industry = stockModel.Industry,
-                MarketCap = stockModel.MarketCap,
+                MarketCap = stockModel.MarketCap ?? 0,
                 Comments = stockModel.Comments.Select(c => c.ToCommentDto()).ToList()
             };
         }
@@ -41,12 +41,12 @@ namespace backend.Mappers
         {
             return new Stock
             {
-                Symbol = fmpStock.symbol,
-                CompanyName = fmpStock.companyName,
-                Purchase = (decimal) fmpStock.price,
-                LastDiv =(decimal) fmpStock.lastDiv,
-                Industry = fmpStock.industry,
-                MarketCap = fmpStock.mktCap
+                Symbol = fmpStock.symbol ?? "Unknown",
+                CompanyName = fmpStock.companyName ?? "Unknown",
+                Purchase = Convert.ToDecimal(fmpStock.price ?? 0),
+                LastDiv = Convert.ToDecimal(fmpStock.lastDiv ?? 0),
+                Industry = fmpStock.industry ?? "N/A",
+                MarketCap = fmpStock.mktCap ?? 0
             };
         }
     }

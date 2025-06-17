@@ -76,7 +76,7 @@ namespace backend.Controllers
                 }
                 else
                 {
-                    await _stockRepo.CreateAsync(stock);
+                   stock = await _stockRepo.CreateAsync(stock);
                 }
             }
             var username = User.GetUserName();
